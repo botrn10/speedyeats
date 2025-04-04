@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="32f61f54-6320-449e-8121-f01dfc82ed29" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/deploymentTargetSelector.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/migrations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/FavoriteActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/fragment/CartFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IClickCTHD.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/baseline_favorite_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/baseline_home_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/baseline_supervised_user_circle_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/brcq.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/fg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/hj.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/menu/customer_nav.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/androidTest/java/com/example/doan_tmdt/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/androidTest/java/com/example/doanfood/ExampleInstrumentedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/AllCommentAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/AllCommentAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/AutoTextAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/AutoTextAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/BannerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/BannerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/BinhLuanAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/BinhLuanAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/CategoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/CategoryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/ChitietHoadonAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/CustomTabLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/CustomTabLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/FavoriteAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/FavoriteAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/GiohangAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/GiohangAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/HoaDonAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/HoaDonDaGiaoAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/LichSuSearchAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/LichSuSearchAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/LoaiProductAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/LoaiProductAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/MessageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/MessageAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/ProductAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/ProductAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/SearchAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/SearchAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/UserAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Adapter/UserAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Adapter/ViewPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Animation/AnimationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Animation/AnimationUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/ChatBot/MsgModal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/ChatBot/MsgModal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/ChatBot/RetrofitAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/ChatBot/RetrofitAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Binhluan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Binhluan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/ChatList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/ChatList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Favorite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Favorite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Giohang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Giohang.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/HoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/HoaDon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/LoaiProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/LoaiProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/Story.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/Story.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Notification/MyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Notification/MyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/BinhLuanPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/BinhLuanPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/FavoritePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/FavoritePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/GioHangPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/GioHangPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/HoaDonPreSenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/HoaDonPreSenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/ProductPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/ProductPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/StoryPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/StoryPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/Presenter/UserPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/Presenter/UserPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/SplashActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminAddLoaiSPActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminAddLoaiSPActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminAddSPActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminAddSPActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminBillMainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminCTHDActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminCTHDAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminChartBillActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminHomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminHomeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminProductActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminProductActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminProductAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminProductAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminUsersActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminUsersActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/Admin/AdminUsersAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/Admin/AdminUsersAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/CTHDActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/CaptureAct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/CaptureAct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/CartActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/CartActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/CategoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/CategoryActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/ChatActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/CommentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/CommentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/DanhGiaActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/DanhGiaActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/DetailSPActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/DetailSPActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/FavoriteActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/ForgotPasswordActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/MessageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/MessageActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/OrderSuccessActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/OrderSuccessActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/SearchActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/SearchActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/SignInActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/SignInActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/View/SignUpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/View/SignUpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/BillFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/CartFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/FavoriteFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/fragment/FavoriteFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/fragment/HomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/NotifyFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/fragment/NotifyFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/fragment/ProfileFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/bill/DaGiaoFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/bill/DaHuyFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/bill/DangGiaoFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/fragment/bill/DangXuLyFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/BinhLuanView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/BinhLuanView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/FavoriteView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/FavoriteView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/GioHangView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/GioHangView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/HoaDonView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/HoaDonView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IBinhLuan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IBinhLuan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IClickCTHD.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IClickLoaiProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IClickLoaiProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IClickOpenBottomSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IClickOpenBottomSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IFavorite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IFavorite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IGioHang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IGioHang.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IHoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IHoaDon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IStory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/IUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/IUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/ProductView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/ProductView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/StoryView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/StoryView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/my_interface/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/my_interface/UserView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/ultil/MyReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/ultil/MyReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/doan_tmdt/ultil/NetworkUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/doanfood/ultil/NetworkUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable-v24/background_signin_user.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/background_header_8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/ctr_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/ctr_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_add_spactivity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_admin_add_spactivity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_bill_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_chart_bill.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_cthdactivity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_admin_cthdactivity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_admin_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_category.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_chat.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_cthdactivity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_cthdactivity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_detail_spactivity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_detail_spactivity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_forgot_password.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_sign_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_sign_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_sign_up.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_sign_up.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_splash.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_splash.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/custom_dong_auto_text.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/custom_dong_auto_text.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dialog_update_trangthai.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dialog_update_trangthai.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_bill.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_chitiet_hoadon.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_cthd_admin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_hoadon.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_hoadon_dagiao.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_hoadon_khac.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_loai_product.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_loai_product.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_product_noibat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_product_noibat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_sp_goiy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_sp_goiy.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_sp_hanquoc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_sp_hanquoc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_sp_lau.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_sp_lau.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_sp_micay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_sp_micay.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dong_sp_yeuthich.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dong_sp_yeuthich.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_bill.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_bill.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_da_giao.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_da_huy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_dang_giao.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_dang_xu_ly.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_favorite.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_favorite.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_notify.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_notify.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/doan_tmdt/ExampleUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/doanfood/ExampleUnitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/../gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/../gradlew.bat" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2pmcekyOSDbOBmavKjt97mRITSH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "android.gradle.sync.needed": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/PC/Desktop/doancuoiky/DoAnTMDT"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="32f61f54-6320-449e-8121-f01dfc82ed29" name="Changes" comment="" />
+      <created>1733374789604</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733374789604</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "102246217518",
+    "project_id": "datamobile-e1f83",
+    "storage_bucket": "datamobile-e1f83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102246217518:android:c11ea3762b047c4059ecbf",
+        "android_client_info": {
+          "package_name": "com.example.doanfood"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe1NCWOpaAsn9IOVYwy9Q_xaadERI6TIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102246217518:android:ae724144aaa2f2dc59ecbf",
+        "android_client_info": {
+          "package_name": "vn.edu.ueh.speedyeats"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe1NCWOpaAsn9IOVYwy9Q_xaadERI6TIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
