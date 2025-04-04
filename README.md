@@ -4,7 +4,7 @@
 
 **SpeedyEats** is an e-commerce mobile app designed for online food sales, specifically fast food. The app includes essential features like login/register, product search, product categorization, homepage banners, online payment functionality, product favorites, and profile management.
 
-This project serves as the **final project** for the **Software Architecture - Service-Oriented** course at the University of Economics. The app is built using **MVP (Model-View-Presenter)** architecture and is developed in **Java** using **Android Studio**, with **Firebase** for data management.
+This project serves as the **final project** for the **Software Architecture - Service-Oriented** course at the University of Economics HCMC. The app is built using **MVP (Model-View-Presenter)** architecture and is developed in **Java** using **Android Studio**, with **Firebase** for data management.
 
 ## Architecture
 
