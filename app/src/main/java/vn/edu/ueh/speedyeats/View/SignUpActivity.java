@@ -2,6 +2,8 @@ package vn.edu.ueh.speedyeats.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import vn.edu.ueh.speedyeats.Util.SignUpValidator;
+
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -42,6 +44,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     // Check Internet
     private BroadcastReceiver MyReceiver = null;
+
+    private boolean isReceiverRegistered = false; // thêm dòng này
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,78 +62,90 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void Event() {
-        btnSignUpDangKy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = edtSignUpEmail.getText().toString().trim();
-                String pass = edtSignUpPassword.getText().toString().trim();
-                String confirm = edtSignUpConfirm.getText().toString().trim();
-                if (email.length() > 0){
-                    if (pass.length() > 0){
-                        if (pass.equals(confirm)){
-                            FirebaseAuth auth = FirebaseAuth.getInstance();
-                            auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()){
-                                        HashMap<String,String> hashMap =  new HashMap<>();
-                                        hashMap.put("iduser",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        hashMap.put("email", email);
-                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                        db.collection("IDUser").add(hashMap);
+        btnSignUpDangKy.setOnClickListener(view -> {
 
-                                        // Realtime Firebase: Tạo 1 database có tên Users, id tự động đặt cho tài khoản
-                                        String username= "any name";
-                                        reference1 = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        HashMap<String, String> mapRealtime = new HashMap<>();
-                                        mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        mapRealtime.put("name", username);
-                                        mapRealtime.put("avatar", "default");
-                                        mapRealtime.put("status", "online");
-                                        mapRealtime.put("search", username.toLowerCase());
-                                        reference1.setValue(mapRealtime);
+            String email = edtSignUpEmail.getText().toString().trim();
+            String pass = edtSignUpPassword.getText().toString().trim();
+            String confirm = edtSignUpConfirm.getText().toString().trim();
 
+            // Validate từng bước
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                                        HashMap<String, String> mapRealtime2 = new HashMap<>();
-                                        mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        reference2.setValue(mapRealtime2);
+            if (!SignUpValidator.isEmailValid(email)) {
+                Toast.makeText(this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if (pass.isEmpty()) {
+                Toast.makeText(this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        User user = new User();
-                                        user.setIduser(auth.getUid());
-                                        user.setEmail(email);
-                                        finishAffinity();
-                                        Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                    } else if (!isEmailValid(email)){
-                                        Toast.makeText(SignUpActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        Log.w("signup","failed", task.getException());
-                                    }
-                                }
-                            });
+            if (!SignUpValidator.isPasswordValid(pass)) {
+                Toast.makeText(this, "Mật khẩu phải >= 6 ký tự", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!SignUpValidator.isConfirmPasswordMatch(pass, confirm)) {
+                Toast.makeText(this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Nếu tất cả hợp lệ → gọi Firebase
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.createUserWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+
+                            HashMap<String,String> hashMap = new HashMap<>();
+                            hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            hashMap.put("email", email);
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("IDUser").add(hashMap);
+
+                            String username = "any name";
+                            reference1 = FirebaseDatabase.getInstance()
+                                    .getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                            HashMap<String, String> mapRealtime = new HashMap<>();
+                            mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            mapRealtime.put("name", username);
+                            mapRealtime.put("avatar", "default");
+                            mapRealtime.put("status", "online");
+                            mapRealtime.put("search", username.toLowerCase());
+                            reference1.setValue(mapRealtime);
+
+                            HashMap<String, String> mapRealtime2 = new HashMap<>();
+                            mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            // ⚠️ bạn chưa khởi tạo reference2 → nhớ fix nếu cần
+                            if (reference2 != null) {
+                                reference2.setValue(mapRealtime2);
+                            }
+
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            startActivity(intent);
+
+                            User user = new User();
+                            user.setIduser(auth.getUid());
+                            user.setEmail(email);
+
+                            finishAffinity();
+
+                            Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Mật khẩu xác nhận không khớp.\nVui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Log.w("signup","failed", task.getException());
                         }
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
-                }
-
-            }
+                    });
         });
 
-        tvLoginUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        tvLoginUser.setOnClickListener(view -> finish());
     }
 
     private void InitWidget() {
@@ -146,13 +163,17 @@ public class SignUpActivity extends AppCompatActivity {
     // Check Internet
     public void broadcastIntent() {
         registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
+        isReceiverRegistered = true;
     }
 
     // Check Internet
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(MyReceiver);
+
+        if (isReceiverRegistered && MyReceiver != null) {
+            unregisterReceiver(MyReceiver);
+            isReceiverRegistered = false;
+        }
     }
 }

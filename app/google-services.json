@@ -7,31 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:102246217518:android:c11ea3762b047c4059ecbf",
-        "android_client_info": {
-          "package_name": "com.example.doanfood"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDe1NCWOpaAsn9IOVYwy9Q_xaadERI6TIU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:102246217518:android:ae724144aaa2f2dc59ecbf",
         "android_client_info": {
           "package_name": "vn.edu.ueh.speedyeats"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "102246217518-sh3bab22epah0b9fshu67k6gn5riq80m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.edu.ueh.speedyeats",
+            "certificate_hash": "715f1cf1ce48bd054cb033110b775cc7ea90ae20"
+          }
+        },
+        {
+          "client_id": "102246217518-jkpqd2i219d8fdnosmmv57cpkhuarbqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDe1NCWOpaAsn9IOVYwy9Q_xaadERI6TIU"
@@ -39,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102246217518-jkpqd2i219d8fdnosmmv57cpkhuarbqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

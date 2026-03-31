@@ -164,40 +164,55 @@ public class ProfileFragment extends Fragment {
 //    }
 
     private void LoadInfo() {
-        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Profile")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                if(queryDocumentSnapshots.size()>0){
-                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                    if(documentSnapshot!=null){
-                        key = documentSnapshot.getId();
-                        try{
-                            edtAddress.setText(documentSnapshot.getString("diachi").length()>0 ?
-                                    documentSnapshot.getString("diachi") : "");
-                            edtFullName.setText(documentSnapshot.getString("hoten").length()>0 ?
-                                    documentSnapshot.getString("hoten") : "");
-                            edtPhoneNumber.setText(documentSnapshot.getString("sdt").length()>0 ?
-                                    documentSnapshot.getString("sdt") : "");
-                            edtDate.setText(documentSnapshot.getString("ngaysinh").length()>0 ?
-                                    documentSnapshot.getString("ngaysinh") : "");
-                            String sex = documentSnapshot.getString("gioitinh");
-                            if (sex.length()>0){
-                                if (sex.equals("Nam")){
-                                    rdoNam.setChecked(true);
-                                } else {
-                                    rdoNu.setChecked(true);
+        if (user == null) {
+            Log.e("AUTH", "User null ở LoadInfo");
+            startActivity(new Intent(getActivity(), SignInActivity.class));
+            getActivity().finish();
+            return;
+        }
+
+        String uid = user.getUid();
+
+        firestore.collection("User")
+                .document(uid)
+                .collection("Profile")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+
+                        if(queryDocumentSnapshots.size()>0){
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            if(documentSnapshot!=null){
+                                key = documentSnapshot.getId();
+                                try{
+                                    edtAddress.setText(documentSnapshot.getString("diachi").length()>0 ?
+                                            documentSnapshot.getString("diachi") : "");
+                                    edtFullName.setText(documentSnapshot.getString("hoten").length()>0 ?
+                                            documentSnapshot.getString("hoten") : "");
+                                    edtPhoneNumber.setText(documentSnapshot.getString("sdt").length()>0 ?
+                                            documentSnapshot.getString("sdt") : "");
+                                    edtDate.setText(documentSnapshot.getString("ngaysinh").length()>0 ?
+                                            documentSnapshot.getString("ngaysinh") : "");
+
+                                    String sex = documentSnapshot.getString("gioitinh");
+                                    if (sex.length()>0){
+                                        if (sex.equals("Nam")){
+                                            rdoNam.setChecked(true);
+                                        } else {
+                                            rdoNu.setChecked(true);
+                                        }
+                                    } else {
+                                        rdoGroup.clearCheck();
+                                    }
+
+                                    if(documentSnapshot.getString("avatar").length()>0){
+                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(imgAvatar);
+                                    }
+                                }catch (Exception e){
                                 }
-                            } else {
-                                rdoGroup.clearCheck();
-                            }
-                            if(documentSnapshot.getString("avatar").length()>0){
-                                Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(imgAvatar);
-                            }
-                        }catch (Exception e){
-                        }
 
                     }else{
                         HashMap<String,String> hashMap=  new HashMap<>();
@@ -207,9 +222,10 @@ public class ProfileFragment extends Fragment {
                         hashMap.put("ngaysinh","");
                         hashMap.put("gioitinh","");
                         hashMap.put("avatar","");
-                        hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        hashMap.put("iduser", uid);
+                                firestore.collection("User")
+                                        .document(uid)
+                                        .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(@NonNull DocumentReference documentReference) {
                                 key = documentReference.getId();
@@ -225,9 +241,10 @@ public class ProfileFragment extends Fragment {
                     hashMap.put("ngaysinh","");
                     hashMap.put("gioitinh","");
                     hashMap.put("avatar","");
-                    hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    hashMap.put("iduser", uid);
+                            firestore.collection("User")
+                                    .document(uid)
+                                    .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(@NonNull DocumentReference documentReference) {
                             key = documentReference.getId();
@@ -254,6 +271,16 @@ public class ProfileFragment extends Fragment {
     }
 
     private void Event() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            Log.e("AUTH", "User null ở LoadInfo");
+            startActivity(new Intent(getActivity(), SignInActivity.class));
+            getActivity().finish();
+            return;
+        }
+
+        String uid = user.getUid();
 
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,7 +360,7 @@ public class ProfileFragment extends Fragment {
                 chinh.put("ngaysinh", strDate);
                 chinh.put("gioitinh", strSex);
 
-                firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                firestore.collection("User").document(uid)
                         .collection("Profile").document(key)
                         .update(chinh).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -347,9 +374,9 @@ public class ProfileFragment extends Fragment {
                 });
 
                 // Import vào Realtime của Firebase
-                reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                map.put("iduser", uid);
                 map.put("name", strFullName);
                 map.put("search", strFullName.toLowerCase());
                 reference.updateChildren(map);
@@ -448,6 +475,17 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            Log.e("AUTH", "User null ở LoadInfo");
+            startActivity(new Intent(getActivity(), SignInActivity.class));
+            getActivity().finish();
+            return;
+        }
+
+        String uid = user.getUid();
+
         if(requestCode == 123 && resultCode== getActivity().RESULT_OK){
             Uri uri = data.getData();
             Log.d("CHECKED",uri+" ");
@@ -458,7 +496,8 @@ public class ProfileFragment extends Fragment {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] datas = baos.toByteArray();
-                String filename = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                String filename = uid;
                 storageReference= FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
                 storageReference.child("Profile").child(filename+".jpg").putBytes(datas).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -467,7 +506,8 @@ public class ProfileFragment extends Fragment {
                             storageReference.child("Profile").child(filename+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(@NonNull Uri uri) {
-                                    firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    firestore.collection("User")
+                                            .document(uid)
                                             .collection("Profile").document(key)
                                             .update("avatar",uri.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -479,7 +519,7 @@ public class ProfileFragment extends Fragment {
                                     });
 
                                     // update vào realtime database của firebase
-                                    reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("avatar", uri.toString());
                                     reference.updateChildren(map);

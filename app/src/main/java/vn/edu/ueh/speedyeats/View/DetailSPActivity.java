@@ -1,5 +1,7 @@
 package vn.edu.ueh.speedyeats.View;
 
+import vn.edu.ueh.speedyeats.Util.DetailValidator;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.Toolbar;
@@ -110,32 +112,41 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
 
     // Nút yêu thích
     public void onDefaultToggleClick(View view) {
-        final String[] idlove = {""};
-        boolean ToggleButtonState = toggleButtonFavorite.isChecked();
-        if (ToggleButtonState){
-            // Nếu thích thì làm gì và ngược lại
-            HashMap<String, String> map = new HashMap<>();
-            map.put("idproduct", product.getId());
-            map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-            db.collection("Favorite").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    idlove[0] = documentReference.getId();
-                }
-            });
 
-        } else {
-            db.collection("Favorite").whereEqualTo("idproduct", product.getId())
-                    .whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                        db.collection("Favorite").document(q.getId()).delete();
-                    }
-                }
-            });
+        if (!DetailValidator.isProductValid(product.getId())) {
+            Toast.makeText(this, "Sản phẩm không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
+            toggleButtonFavorite.setChecked(false);
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
+        boolean isChecked = toggleButtonFavorite.isChecked();
+
+        if (isChecked) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("idproduct", product.getId());
+            map.put("iduser", userId);
+
+            db.collection("Favorite").add(map);
+
+        } else {
+            db.collection("Favorite")
+                    .whereEqualTo("idproduct", product.getId())
+                    .whereEqualTo("iduser", userId)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                            db.collection("Favorite").document(q.getId()).delete();
+                        }
+                    });
+        }
     }
 
     private void setBottomSheetDialog(){
@@ -153,58 +164,46 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
     }
     public void initBottomSheet(){
         btnMinusBottom.setVisibility(View.GONE);
-        btnMinusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-//                btnPlusBottom.setVisibility(View.VISIBLE);    // Nếu muốn giới hạn lượng đặt sản phẩm
-                if (slBottom < 2){
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
-            }
-        });
-        btnPlusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
+        btnMinusBottom.setOnClickListener(view -> {
+            int current = Integer.parseInt(tvSoluongBottom.getText().toString());
 
-                if (slBottom < 2){
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
+            if (!DetailValidator.canDecrease(current)) return;
 
-                // Nếu muốn giới hạn lượng đặt sản phẩm
-//                if (slBottom >= product.getSoluong()){
-//                    btnPlusBottom.setVisibility(View.GONE);
-//                    Toast.makeText(DetailSPActivity.this, "Sản phẩm đặt quá giới hạn cho phép", Toast.LENGTH_SHORT).show();
-//                }
+            slBottom = current - 1;
+            tvSoluongBottom.setText(String.valueOf(slBottom));
 
-            }
+            btnMinusBottom.setVisibility(
+                    DetailValidator.canDecrease(slBottom) ? View.VISIBLE : View.GONE
+            );
         });
 
-        btnBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
-//                AnimationUtil.translateAnimation(viewAnimation, viewAnimation, viewEndAnimation, new Animation.AnimationListener() {
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                        gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
-////                        mainActivity.setCountProductInCart(mainActivity.getmCountProduct() + 1);
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//
-//                    }
-//                });
+        btnPlusBottom.setOnClickListener(view -> {
+            int current = Integer.parseInt(tvSoluongBottom.getText().toString());
+
+            // Nếu muốn giới hạn theo stock thì bật dòng này
+            // if (!DetailValidator.canIncrease(current, product.getSoluong())) return;
+
+            slBottom = current + 1;
+            tvSoluongBottom.setText(String.valueOf(slBottom));
+
+            btnMinusBottom.setVisibility(
+                    DetailValidator.canDecrease(slBottom) ? View.VISIBLE : View.GONE
+            );
+        });
+
+        btnBottom.setOnClickListener(view -> {
+
+            if (!DetailValidator.isProductValid(product.getId())) {
+                Toast.makeText(this, "Sản phẩm không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            if (!DetailValidator.isQuantityValid(slBottom)) {
+                Toast.makeText(this, "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            gioHangPresenter.AddCart(product.getId(), (long) slBottom);
         });
     }
 
@@ -212,19 +211,25 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
         Intent intent = getIntent();
         product = (Product) intent.getSerializableExtra("search");
 
-        // Check sp này đã được yêu thích từ trước hay chưa, nếu có thì sẽ set cho tooglebutton = true;
-        db.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                    if (q.getString("idproduct").equals(product.getId())){
-                        toggleButtonFavorite.setChecked(true);
-                    }
-                }
-            }
-        });
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
+        // ✅ Check null trước khi dùng
+        if (auth.getCurrentUser() != null) {
+            String userId = auth.getCurrentUser().getUid();
+
+            db.collection("Favorite")
+                    .whereEqualTo("iduser", userId)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                            if (q.getString("idproduct").equals(product.getId())) {
+                                toggleButtonFavorite.setChecked(true);
+                            }
+                        }
+                    });
+        }
+
+        // ✅ UI vẫn hiển thị bình thường dù chưa login
         collapsingToolbarLayout.setTitle(product.getTensp());
         tvGiaDetail.setText(NumberFormat.getInstance().format(product.getGiatien()));
         tvHansudungDetail.setText(product.getHansudung());
@@ -232,13 +237,11 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
         tvMoTaDetail.setText(product.getMota());
         Picasso.get().load(product.getHinhanh()).into(imgDetail);
 
-
         Log.d("soluong", "Số lượng sp là: " + product.getSoluong());
+
         binhLuanPresenter = new BinhLuanPresenter(this);
         binhLuanPresenter.HandleGetBinhLuanLimit(product.getId());
-
     }
-
     private void InitWidget() {
         mainActivity = new MainActivity();
         viewAnimation = findViewById(R.id.view_animation);

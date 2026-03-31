@@ -1,5 +1,7 @@
 package vn.edu.ueh.speedyeats.View;
 
+import vn.edu.ueh.speedyeats.Util.SearchValidator;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class SearchActivity extends AppCompatActivity implements ProductView, StoryView {
@@ -74,7 +77,6 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         Event();
     }
 
-
     private void Event() {
         imgBackSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +85,6 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
             }
         });
 
-
-
-
-
-
-
-
         swipeSearch.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,8 +92,10 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
                     @Override
                     public void run() {
                         mlistStory.clear();
-                        storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, new IClickCTHD() {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(user != null){
+                            storyPresenter.HandleGetStory(user.getUid());
+                        }                        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, new IClickCTHD() {
                             @Override
                             public void onClickCTHD(int pos) {
                             }
@@ -111,16 +108,56 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
             }
         });
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
 
+                query = SearchValidator.normalizeQuery(query);
+
+                if (!SearchValidator.isValidQuery(query)) return false;
+
+                StorySearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                newText = SearchValidator.normalizeQuery(newText);
+
+                if (!SearchValidator.isValidQuery(newText)) {
+                    rcvSearch.setVisibility(View.GONE);
+                    return true;
+                }
+
+                rcvSearch.setVisibility(View.VISIBLE);
+
+                if (adapter != null) {
+                    adapter.filter(newText);
+                }
+
+                return true;
+            }
+        });
     }
 
 
 
     private void StorySearch(String text){
+
+        text = SearchValidator.normalizeQuery(text);
+
+        if (!SearchValidator.isValidQuery(text)) return;
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
+
         HashMap<String,String> hashMap =  new HashMap<>();
         hashMap.put("noidungtimkiem", text);
-        firestore.collection("LichSuTimKiem").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Story").add(hashMap);
+
+        firestore.collection("LichSuTimKiem")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Story")
+                .add(hashMap);
     }
 
 
@@ -149,9 +186,20 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
 
 
         productPresenter.HandleGetDataProduct();
-        storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            storyPresenter.HandleGetStory(user.getUid());
+        }
+        adapter = new SearchAdapter(SearchActivity.this, mlistsearch, pos -> {
+            Product product = mlistsearch.get(pos);
+            Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
+            intent.putExtra("search", product);
+            startActivity(intent);
+        });
 
+        rcvSearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        rcvSearch.setAdapter(adapter);
     }
 
 
@@ -173,53 +221,18 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
 
     @Override
     public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
+
         gia = (gia != null) ? gia : 0L;
         soluong = (soluong != null) ? soluong : 0L;
         type = (type != null) ? type : 0L;
+
         mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong));
         mlistAuto.add(new Product(ten));
-        adapter = new SearchAdapter(SearchActivity.this, mlistsearch, new IClickCTHD() {
-            @Override
-            public void onClickCTHD(int pos) {
-                Product product = mlistsearch.get(pos);
-                Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
-                intent.putExtra("search", product);
-                startActivity(intent);
-            }
-        });
-        rcvSearch.setLayoutManager(new LinearLayoutManager(SearchActivity.this,RecyclerView.VERTICAL,false));
-        rcvSearch.setAdapter(adapter);
 
-
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                StorySearch(query);
-                return false;
-            }
-
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                rcvSearch.setVisibility(View.VISIBLE);
-                adapter.filter(newText);
-                return true;
-            }
-        });
-
-
-
-
-//        AutoTextAdapter autoTextAdapter = new AutoTextAdapter(this, R.layout.custom_dong_auto_text, mlistAuto);
-//        autoCompleteTextView.setAdapter(autoTextAdapter);
-
-
-
-
-
-
+        // ✅ CHỈ update adapter
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -249,9 +262,13 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         switch (requestCode){
             // get text array from voice intent
             case REQUEST_CODE_SPEECH_INPUT:
-                if (resultCode == RESULT_OK && null != data){
+                if (resultCode == RESULT_OK && data != null){
+
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    searchView.setQuery(result.get(0), false);
+
+                    if (SearchValidator.isVoiceResultValid(result)) {
+                        searchView.setQuery(result.get(0), false);
+                    }
                 }
                 break;
         }

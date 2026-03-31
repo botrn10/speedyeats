@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_food2_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DoAn_TMDT"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity android:name="vn.edu.ueh.speedyeats.View.CartActivity"></activity>

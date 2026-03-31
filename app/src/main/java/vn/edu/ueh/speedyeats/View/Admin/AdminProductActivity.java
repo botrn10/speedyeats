@@ -1,4 +1,6 @@
 package vn.edu.ueh.speedyeats.View.Admin;
+import vn.edu.ueh.speedyeats.Util.AdminProductValidator;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,18 +26,22 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminProductActivity extends AppCompatActivity {
 
     private RecyclerView rcvAdminProduct;
     private AppCompatImageView imgAddProduct;
-    private ArrayList<Product> mlistProduct;
-    private AdminProductAdapter adapter;
     private ImageView imgBackAdminProduct;
+    private Spinner spinnerLoaiSP;
+
+    private ArrayList<Product> mlistProduct;
+    private ArrayList<Product> mlistAllProduct; // lưu toàn bộ
+    private ArrayList<String> mlistLoaiSP;
+
+    private AdminProductAdapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private Spinner spinnerLoaiSP;
-    private ArrayList<String> mlistLoaiSP;
     private String category;
 
     @Override
@@ -46,135 +52,109 @@ public class AdminProductActivity extends AppCompatActivity {
         InitWidget();
         Init();
         Event();
-        HandleGetDataAllProduct(); // Load all products when activity starts
-    }
-
-    private void Event() {
-        imgAddProduct.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminProductActivity.this, AdminAddSPActivity.class);
-            startActivity(intent);
-        });
-
-        imgBackAdminProduct.setOnClickListener(view -> finish());
-    }
-
-    private void HandleGetDataAllProduct() {
-        db.collection("SanPham").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                mlistProduct.clear(); // Clear previous data
-
-                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                    String tensp = d.getString("tensp");
-                    Long giatien = d.getLong("giatien");
-                    String hinhanh = d.getString("hinhanh");
-                    String loaisp = d.getString("loaisp");
-                    String mota = d.getString("mota");
-                    Long soluong = d.getLong("soluong");
-                    String hansudung = d.getString("hansudung");
-                    Long type = d.getLong("type");
-                    String trongluong = d.getString("trongluong");
-
-                    // Kiểm tra null và gán giá trị mặc định nếu cần
-                    giatien = (giatien != null) ? giatien : 0L; // Gán giá trị mặc định là 0 nếu giatien là null
-                    soluong = (soluong != null) ? soluong : 0L; // Gán giá trị mặc định là 0 nếu soluong là null
-                    type = (type != null) ? type : 0L; // Gán giá trị mặc định là 0 nếu type là null
-
-                    // Thêm sản phẩm vào danh sách
-                    mlistProduct.add(new Product(d.getId(), tensp, giatien, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong));
-                }
-
-                // Cập nhật adapter
-                setupAdapter();
-            }
-        });
-    }
-
-    private void setupAdapter() {
-        adapter = new AdminProductAdapter(AdminProductActivity.this, mlistProduct, new IClickCTHD() {
-            @Override
-            public void onClickCTHD(int pos) {
-                Product product = mlistProduct.get(pos);
-                Intent intent = new Intent(AdminProductActivity.this, AdminAddSPActivity.class);
-                intent.putExtra("SP", product);
-                startActivity(intent);
-            }
-        });
-
-        rcvAdminProduct.setLayoutManager(new LinearLayoutManager(AdminProductActivity.this, RecyclerView.VERTICAL, false));
-        rcvAdminProduct.setAdapter(adapter);
+        setupAdapter(); // ❗ init 1 lần
+        loadAllProducts();
     }
 
     private void Init() {
         mlistProduct = new ArrayList<>();
+        mlistAllProduct = new ArrayList<>();
         mlistLoaiSP = new ArrayList<>();
         mlistLoaiSP.add("Tất cả");
 
-        db.collection("LoaiProduct").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                    mlistLoaiSP.add(d.getString("tenloai"));
-                }
-                setupSpinner();
+        db.collection("LoaiProduct").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                mlistLoaiSP.add(d.getString("tenloai"));
             }
+            setupSpinner();
         });
+    }
+
+    private void setupAdapter() {
+        adapter = new AdminProductAdapter(this, mlistProduct, pos -> {
+            Product product = mlistProduct.get(pos);
+            Intent intent = new Intent(this, AdminAddSPActivity.class);
+            intent.putExtra("SP", product);
+            startActivity(intent);
+        });
+
+        rcvAdminProduct.setLayoutManager(new LinearLayoutManager(this));
+        rcvAdminProduct.setAdapter(adapter);
+    }
+
+    private void loadAllProducts() {
+        db.collection("SanPham").get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            mlistAllProduct.clear();
+
+            for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                Product p = parseProduct(d);
+
+                if (AdminProductValidator.isValidProduct(p)) {
+                    mlistAllProduct.add(p);
+                }
+            }
+
+            applyFilter("Tất cả");
+        });
+    }
+
+    private void applyFilter(String category) {
+        mlistProduct.clear();
+
+        List<Product> filtered = AdminProductValidator
+                .filterByCategory(mlistAllProduct, category);
+
+        mlistProduct.addAll(filtered);
+        adapter.notifyDataSetChanged();
+    }
+
+    private Product parseProduct(QueryDocumentSnapshot d) {
+        Long giatien = d.getLong("giatien");
+        Long soluong = d.getLong("soluong");
+        Long type = d.getLong("type");
+
+        return new Product(
+                d.getId(),
+                d.getString("tensp"),
+                giatien != null ? giatien : 0L,
+                d.getString("hinhanh"),
+                d.getString("loaisp"),
+                d.getString("mota"),
+                soluong != null ? soluong : 0L,
+                d.getString("hansudung"),
+                type != null ? type : 0L,
+                d.getString("trongluong")
+        );
     }
 
     private void setupSpinner() {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AdminProductActivity.this, R.layout.support_simple_spinner_dropdown_item, mlistLoaiSP);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        spinnerLoaiSP.setAdapter(arrayAdapter);
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                mlistLoaiSP
+        );
+
+        spinnerLoaiSP.setAdapter(adapterSpinner);
+
         spinnerLoaiSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
                 category = mlistLoaiSP.get(i);
-                mlistProduct.clear(); // Clear current product list
-
-                if (category.equals("Tất cả")) {
-                    HandleGetDataAllProduct(); // Load all products
-                } else {
-                    loadProductsByCategory(category); // Load products by category
-                }
+                applyFilter(category); // ❗ filter local
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // Do nothing
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
-    private void loadProductsByCategory(String category) {
-        db.collection("SanPham").whereEqualTo("loaisp", category).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                mlistProduct.clear(); // Clear previous data
-
-                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                    String tensp = d.getString("tensp");
-                    Long giatien = d.getLong("giatien");
-                    String hinhanh = d.getString("hinhanh");
-                    String loaisp = d.getString("loaisp");
-                    String mota = d.getString("mota");
-                    Long soluong = d.getLong("soluong");
-                    String hansudung = d.getString("hansudung");
-                    Long type = d.getLong("type");
-                    String trongluong = d.getString("trongluong");
-
-                    // Kiểm tra null và gán giá trị mặc định nếu cần
-                    giatien = (giatien != null) ? giatien : 0L; // Gán giá trị mặc định là 0 nếu giatien là null
-                    soluong = (soluong != null) ? soluong : 0L; // Gán giá trị mặc định là 0 nếu soluong là null
-                    type = (type != null) ? type : 0L; // Gán giá trị mặc định là 0 nếu type là null
-
-                    // Thêm sản phẩm vào danh sách
-                    mlistProduct.add(new Product(d.getId(), tensp, giatien, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong));
-                }
-
-                // Cập nhật adapter
-                setupAdapter(); // Cập nhật adapter sau khi lấy sản phẩm
-            }
+    private void Event() {
+        imgAddProduct.setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminAddSPActivity.class));
         });
+
+        imgBackAdminProduct.setOnClickListener(v -> finish());
     }
 
     private void InitWidget() {

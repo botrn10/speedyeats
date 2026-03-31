@@ -1,5 +1,8 @@
 package vn.edu.ueh.speedyeats.View.Admin;
 
+import vn.edu.ueh.speedyeats.Util.AdminAddSPValidator;
+import vn.edu.ueh.speedyeats.Mapper.ProductMapper;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,11 +58,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class AdminAddSPActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
-
-
-
-
 
     private CircleImageView imgAddLoaiProduct;
     private ImageView btnAddBack, btnRefresh, btnSave;
@@ -188,16 +186,17 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     return;
                 }
                 try {
-                    Product sp = new Product();
-                    sp.setGiatien(Long.parseLong(edtGiatienSP.getText().toString()));
-                    sp.setMota(edtMotaSP.getText().toString());
-                    sp.setHansudung(edtHansudungSP.getText().toString());
-                    sp.setType(Long.parseLong(edtTypeSP.getText().toString()));
-                    sp.setTensp(edtTenSP.getText().toString());
-                    sp.setSoluong(Long.parseLong(edtSoluongSP.getText().toString()));
-                    sp.setTrongluong(edtTrongluongSP.getText().toString());
-                    sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
-                    sp.setHinhanh(image);
+                    Product sp = ProductMapper.fromInput(
+                            edtTenSP.getText().toString(),
+                            edtGiatienSP.getText().toString(),
+                            edtHansudungSP.getText().toString(),
+                            edtTrongluongSP.getText().toString(),
+                            edtSoluongSP.getText().toString(),
+                            edtTypeSP.getText().toString(),
+                            edtMotaSP.getText().toString(),
+                            spinnerDanhMuc.getSelectedItem().toString(),
+                            image
+                    );
 
 
                     db.collection("SanPham").add(sp).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -326,39 +325,29 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 
 
     private boolean validate() {
-        if (TextUtils.isEmpty(image)) {
-            Toast.makeText(this, "Vui lòng chọn hình ảnh", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtGiatienSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập giá tiền", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtTenSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập tên sản phẩm", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtHansudungSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập hạn sử dụng", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtTrongluongSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập Trọng lượng", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtSoluongSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập số lượng", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtTypeSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập type", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(edtMotaSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập mô tả", Toast.LENGTH_SHORT).show();
+
+        String ten = edtTenSP.getText().toString();
+        String gia = edtGiatienSP.getText().toString();
+        String hsd = edtHansudungSP.getText().toString();
+        String tl = edtTrongluongSP.getText().toString();
+        String sl = edtSoluongSP.getText().toString();
+        String type = edtTypeSP.getText().toString();
+        String mota = edtMotaSP.getText().toString();
+
+        if (!AdminAddSPValidator.validateInput(
+                image, ten, gia, hsd, tl, sl, type, mota)) {
+
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        if (!AdminAddSPValidator.isValidNumber(gia)
+                || !AdminAddSPValidator.isValidNumber(sl)
+                || !AdminAddSPValidator.isValidNumber(type)) {
+
+            Toast.makeText(this, "Giá / Số lượng / Type phải là số", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         return true;
     }

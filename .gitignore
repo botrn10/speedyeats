@@ -13,3 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+.gradle/
+build/
+caches/
+*.log
+.tmp/
+daemon/
+native/
+wrapper/
+hs_err_pid*
+replay_pid*
+.idea/

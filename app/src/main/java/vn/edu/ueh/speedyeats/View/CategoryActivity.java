@@ -280,11 +280,6 @@ public class CategoryActivity extends AppCompatActivity {
         arr_salad = new ArrayList<>();
         arr_garan = new ArrayList<>();
 
-
-
-
     }
-
-
 }
 

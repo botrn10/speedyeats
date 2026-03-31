@@ -1,4 +1,5 @@
 package vn.edu.ueh.speedyeats.View;
+import vn.edu.ueh.speedyeats.Util.OrderValidator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -84,6 +85,12 @@ public class OrderSuccessActivity extends AppCompatActivity {
     }
 
     private void CreatePDF() {
+        // ✅ CHECK LIST (đặt ở đầu)
+        if (!OrderValidator.isListValid(mlist)) {
+            Toast.makeText(this, "Không có sản phẩm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         dateObj = new Date();
 
         PdfDocument myPdfDocument = new PdfDocument();
@@ -150,6 +157,10 @@ public class OrderSuccessActivity extends AppCompatActivity {
         canvas.drawLine(880, 790, 880, 840, myPaint);
         canvas.drawLine(1030, 790, 1030, 840, myPaint);
 
+        // ✅ RESET (rất quan trọng)
+        i = 0;
+        j = 0;
+
         String s = "";
         for (Product product: mlist){
             i++;
@@ -170,20 +181,17 @@ public class OrderSuccessActivity extends AppCompatActivity {
             j=j+100;         //j=j+100;
         }
 
-        try {
-            Number number = NumberFormat.getInstance().parse(tienthanhtoan);
-            tong = Integer.parseInt(String.valueOf(number));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        // ✅ dùng Validator
+        tong = OrderValidator.parseMoney(tienthanhtoan);
+        int phi = 10000;
+        int productTotal = tong - phi;
 
         // Thành tiền
         canvas.drawLine(680, 1735, pageWidth-20, 1735, myPaint);
         canvas.drawText("Thành tiền", 700, 1785, myPaint);
         canvas.drawText(":", 900, 1785, myPaint);
         myPaint.setTextAlign(Paint.Align.RIGHT);
-        int phi = 10000;
-        canvas.drawText(NumberFormat.getInstance().format(tong-phi), pageWidth-40, 1785, myPaint);
+        canvas.drawText(NumberFormat.getInstance().format(productTotal), pageWidth-40, 1785, myPaint);
 
         // Phí vận chuyển
         myPaint.setTextAlign(Paint.Align.LEFT);
@@ -220,19 +228,20 @@ public class OrderSuccessActivity extends AppCompatActivity {
     private void Init() {
 
         Intent intent = getIntent();
-        idhoadon = intent.getStringExtra("idhoadon");
-        ngaydat = intent.getStringExtra("ngaydat");
-        hoten = intent.getStringExtra("hoten");
-        diachi = intent.getStringExtra("diachi");
-        sdt = intent.getStringExtra("sdt");
-        phuongthuc = intent.getStringExtra("phuongthuc");
-        ghichu = intent.getStringExtra("ghichu");
-        sanpham = intent.getStringExtra("sanpham");
-        tienthanhtoan = intent.getStringExtra("tienthanhtoan");
 
-        mlist = new ArrayList<>();
+        idhoadon = safe(intent.getStringExtra("idhoadon"));
+        ngaydat = safe(intent.getStringExtra("ngaydat"));
+        hoten = safe(intent.getStringExtra("hoten"));
+        diachi = safe(intent.getStringExtra("diachi"));
+        sdt = safe(intent.getStringExtra("sdt"));
+        phuongthuc = safe(intent.getStringExtra("phuongthuc"));
+        ghichu = safe(intent.getStringExtra("ghichu"));
+        sanpham = safe(intent.getStringExtra("sanpham"));
+        tienthanhtoan = safe(intent.getStringExtra("tienthanhtoan"));
+
         mlist = (ArrayList<Product>) intent.getSerializableExtra("serialzable");
 
+        if (mlist == null) mlist = new ArrayList<>();
 
         tvIDHoadon.setText(idhoadon);
         tvDateHoadon.setText(ngaydat);
@@ -244,14 +253,13 @@ public class OrderSuccessActivity extends AppCompatActivity {
         tvSanphamHoadon.setText(sanpham);
         tvTongtienHoadon.setText(tienthanhtoan);
 
-
-        ActivityCompat.requestPermissions(this, new String[]
-                {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-
-
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.pizzahead);
         scalebmp = Bitmap.createScaledBitmap(bmp, 1200, 518, false);
+    }
 
+    // helper
+    private String safe(String s) {
+        return s == null ? "" : s;
     }
 
     private void InitWidget() {

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import com.google.firebase.auth.FirebaseUser;
 public class Giohang {
     private String id;
     private String id_product;
@@ -29,6 +29,13 @@ public class Giohang {
     private FirebaseFirestore db;
 
     public Giohang() {
+    }
+    private String getUID(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            return user.getUid();
+        }
+        return null;
     }
 
     public Giohang(String id, String id_product, long soluong) {
@@ -135,7 +142,13 @@ public class Giohang {
 
     //check giỏ hàng đúng id user
     public  void AddCart(String idsp, Long soluong){
-        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        String uid = getUID();
+        if(uid == null){
+            callback.OnFail();
+            return;
+        }
+
+        db.collection("GioHang").document(uid)
                 .collection("ALL").whereEqualTo("id_product",idsp).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
@@ -179,7 +192,13 @@ public class Giohang {
     }
 
     public  void HandlegetDataGioHang(){
-        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        String uid = getUID();
+        if(uid == null){
+            callback.OnFail();
+            return;
+        }
+
+        db.collection("GioHang").document(uid)
                 .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
@@ -207,13 +226,25 @@ public class Giohang {
         });
     }
     public  void HandleDeleteDataGioHang(String id){
-        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        String uid = getUID();
+        if(uid == null){
+            callback.OnFail();
+            return;
+        }
+
+        db.collection("GioHang").document(uid)
                 .collection("ALL").document(id).delete();
     }
 
     public void HandleGetDataCTHD(String id) {
 
-        db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        String uid = getUID();
+        if(uid == null){
+            callback.OnFail();
+            return;
+        }
+
+        db.collection("GioHang").document(uid)
                 .collection("ALL").whereEqualTo("id_hoadon",id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {

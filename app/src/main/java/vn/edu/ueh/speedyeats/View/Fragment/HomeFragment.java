@@ -1,6 +1,5 @@
 package vn.edu.ueh.speedyeats.View.Fragment;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -48,6 +47,7 @@ import vn.edu.ueh.speedyeats.Util.NetworkUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -113,13 +113,20 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarHome);
         setHasOptionsMenu(true);
         InitWidget();
         Event();
         if (NetworkUtil.isNetworkConnected(getContext())){
-            LoadInfor();
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (user != null) {
+                LoadInfor();
+            }
+
             Banner();
             InitProduct();
             GetDataGaran();
@@ -136,9 +143,19 @@ public class HomeFragment extends Fragment {
 
 
     private void LoadFavorite() {
-        firestore.collection("Favorite").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            tvNumberCart.setVisibility(View.GONE);
+            return;
+        }
+
+        firestore.collection("Favorite")
+                .document(user.getUid())
                 .collection("ALL")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.size() > 0){
@@ -170,36 +187,44 @@ public class HomeFragment extends Fragment {
         MenuItem menuItem = menu.findItem(R.id.menu_two);
         View view = MenuItemCompat.getActionView(menuItem);
 
-
         CircleImageView cirToolbarProfile = view.findViewById(R.id.cir_toolbar_profile);
-        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Profile")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
-                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                            if(documentSnapshot!=null){
-                                try{
-                                    if(documentSnapshot.getString("avatar").length()>0){
-                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(cirToolbarProfile);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            firestore.collection("User")
+                    .document(user.getUid())
+                    .collection("Profile")
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                            if(queryDocumentSnapshots.size()>0){
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                if(documentSnapshot!=null){
+                                    try{
+                                        String avatar = documentSnapshot.getString("avatar");
+                                        if(avatar != null && avatar.length() > 0){
+                                            Picasso.get().load(avatar.trim()).into(cirToolbarProfile);
+                                        }
+                                    }catch (Exception e){
+                                        Log.d("ERROR",e.getMessage());
                                     }
-                                }catch (Exception e){
-                                    Log.d("ERROR",e.getMessage());
                                 }
                             }
                         }
-                    }
-                });
+                    });
+        }
+
         cirToolbarProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Menu two clicked", Toast.LENGTH_SHORT).show();
             }
         });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
@@ -227,10 +252,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
-
-
 
 
         imgHomeCart.setOnClickListener(new View.OnClickListener() {
@@ -487,12 +508,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
     private void Banner() {
         arrayList = new ArrayList<>();
         firestore= FirebaseFirestore.getInstance();
@@ -539,32 +554,45 @@ public class HomeFragment extends Fragment {
 
 
     private void LoadInfor() {
-        tvEmailHome.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Profile")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            tvEmailHome.setText(user.getEmail());
+
+            // ✅ CHỈ dùng uid khi user != null
+            String uid = user.getUid();
+
+            firestore.collection("User")
+                    .document(uid)
+                    .collection("Profile")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (queryDocumentSnapshots.size() > 0) {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                            if(documentSnapshot!=null){
-                                try{
-                                    tvNameHome.setText(documentSnapshot.getString("hoten").length()>0 ?
-                                            documentSnapshot.getString("hoten") : "");
+                            if (documentSnapshot != null) {
+                                try {
+                                    String name = documentSnapshot.getString("hoten");
+                                    tvNameHome.setText(name != null && name.length() > 0 ? name : "");
 
-
-                                    if(documentSnapshot.getString("avatar").length()>0){
-                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(cirAvatarHome);
+                                    String avatar = documentSnapshot.getString("avatar");
+                                    if (avatar != null && avatar.length() > 0) {
+                                        Picasso.get().load(avatar.trim()).into(cirAvatarHome);
                                     }
-                                }catch (Exception e){
-                                    Log.d("ERROR",e.getMessage());
+                                } catch (Exception e) {
+                                    Log.d("ERROR", e.getMessage());
                                 }
                             }
                         }
-                    }
-                });
-    }
+                    });
 
+        } else {
+            // 👉 Trường hợp test (không login)
+            tvEmailHome.setText("Guest");
+            tvNameHome.setText("Guest");
+
+            // ⚠️ QUAN TRỌNG: KHÔNG gọi Firebase nữa
+        }
+    }
 
     private void InitWidget() {
         imgHomeCart = view.findViewById(R.id.img_home_cart);

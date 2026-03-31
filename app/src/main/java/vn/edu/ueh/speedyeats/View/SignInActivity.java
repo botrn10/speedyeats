@@ -1,6 +1,7 @@
 package vn.edu.ueh.speedyeats.View;
 
 import androidx.annotation.NonNull;
+import vn.edu.ueh.speedyeats.Util.AuthValidator;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -30,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import android.util.Log;
+import com.google.firebase.FirebaseApp;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,76 +76,77 @@ public class SignInActivity extends AppCompatActivity {
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.layout_loading);
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
                 String strEmail = edtEmailUser.getText().toString().trim();
                 String strMatKhau = edtMatKhauUser.getText().toString().trim();
-                ArrayList<Admin> arrayList = new ArrayList<>();
-                if(strEmail.length()>0 ){
-                    if(strMatKhau.length()>0){
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("Admin").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
-                                        arrayList.add(new Admin(q.getString("username"), q.getString("pass")));
-                                    }
-                                    String tkadmin;
-                                    String mkadmin;
-                                    int tk = 0;
-                                    for (int i = 0; i < arrayList.size(); i++) {
-                                        Admin admin = arrayList.get(i);
-                                        tkadmin = admin.getUsername();
-                                        mkadmin = admin.getPassword();
-                                        sosanh = tkadmin;
-                                        if (strEmail.equals(tkadmin) && strMatKhau.equals(mkadmin)) {
-                                            tk = 1;
-                                            break;
-                                        } else {
-                                            tk = 2;
-                                        }
-                                    }
-                                    switch (tk){
-                                        case 1:
-                                            progressDialog.dismiss();
-                                            Intent intent = new Intent(SignInActivity.this, AdminHomeActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                            break;
-                                        case 2:
-                                            FirebaseAuth auth = FirebaseAuth.getInstance();
-                                            auth.signInWithEmailAndPassword(strEmail, strMatKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()){
-                                                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                                        startActivity(intent);
-                                                        finishAffinity();
-                                                        progressDialog.dismiss();
-                                                    } else if(!isEmailValid(strEmail) && !sosanh.equals(strEmail)){
-                                                        progressDialog.dismiss();
-                                                        Toast.makeText(SignInActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
 
-                                                    } else {
-                                                        progressDialog.dismiss();
-                                                        Toast.makeText(SignInActivity.this, "Tài khoản hoặc mật khẩu không đúng.\nVui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
-                                                    }
+                // thay if cũ
+                if (!AuthValidator.isValidLoginInput(strEmail, strMatKhau)) {
+                    progressDialog.dismiss();
 
-                                                }
-                                            });
-
-                                            break;
-                                    }
-                                }
-                            });
-
-                    }else{
-                        progressDialog.dismiss();
+                    if (AuthValidator.isEmailEmpty(strEmail)) {
+                        Toast.makeText(SignInActivity.this, "Bạn chưa nhập tài khoản", Toast.LENGTH_SHORT).show();
+                    } else if (AuthValidator.isPasswordEmpty(strMatKhau)) {
                         Toast.makeText(SignInActivity.this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    progressDialog.dismiss();
-                    Toast.makeText(SignInActivity.this, "Bạn chưa nhập tài khoản", Toast.LENGTH_SHORT).show();
+
+                    return;
                 }
 
+                // Firebase + Admin check
+                ArrayList<Admin> arrayList = new ArrayList<>();
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("Admin").get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                                arrayList.add(new Admin(q.getString("username"), q.getString("pass")));
+                            }
+
+                            int tk = 0;
+
+                            for (Admin admin : arrayList) {
+                                if (strEmail.equals(admin.getUsername()) &&
+                                        strMatKhau.equals(admin.getPassword())) {
+                                    tk = 1;
+                                    break;
+                                } else {
+                                    tk = 2;
+                                }
+                            }
+
+                            switch (tk) {
+                                case 1:
+                                    progressDialog.dismiss();
+                                    startActivity(new Intent(SignInActivity.this, AdminHomeActivity.class));
+                                    finish();
+                                    break;
+
+                                case 2:
+                                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                                    auth.signInWithEmailAndPassword(strEmail, strMatKhau)
+                                            .addOnCompleteListener(task -> {
+                                                progressDialog.dismiss();
+
+                                                if (task.isSuccessful()) {
+                                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                                    finishAffinity();
+                                                } else {
+                                                    Toast.makeText(SignInActivity.this,
+                                                            "Sai tài khoản hoặc mật khẩu",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                    break;
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            Log.e("FIRESTORE", "Error", e);
+                            Toast.makeText(SignInActivity.this,
+                                    "Lỗi Firestore: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        });
             }
         });
 

@@ -1,5 +1,7 @@
 package vn.edu.ueh.speedyeats.View;
 
+import vn.edu.ueh.speedyeats.Util.CartValidator;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -114,15 +116,14 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
     }
 
     private void Event() {
-        btnThanhToan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(listGiohang.size()>0){
-                    DiaLogThanhToan();
-                }else{
-                    Toast.makeText(CartActivity.this, "Giỏ hàng của bạn đang trống !", Toast.LENGTH_SHORT).show();
-                }
+        btnThanhToan.setOnClickListener(view -> {
+
+            if (!CartValidator.isCartNotEmpty(listGiohang)) {
+                Toast.makeText(this, "Giỏ hàng của bạn đang trống !", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            DiaLogThanhToan();
         });
 
         imgBackCart.setOnClickListener(new View.OnClickListener() {
@@ -191,137 +192,36 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 diachi = edtdiachi.getText().toString().trim();
                 sdt = edtsdt.getText().toString().trim();
                 ghichu = edtghichu.getText().toString().trim();
-                if(hoten.length()>0){
-                    if(diachi.length()>0){
-                        if(sdt.length()>0){
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            ngaydat = simpleDateFormat.format(calendar.getTime());
-                            phuongthuc = spinnerPhuongthuc.getSelectedItem().toString();
-                            switch (spinnerPhuongthuc.getSelectedItemPosition()){
-                                case 0:
 
-//                                    gioHangPresenter.HandleAddHoaDon(ghichu,simpleDateFormat.format(calendar.getTime()),diachi,hoten,sdt,spinnerPhuongthuc.getSelectedItem().toString(),tienthanhtoan,listGiohang);
-
-                                    HashMap<String,Object> hashMap = new HashMap<>();
-                                    hashMap.put("ghichu", ghichu);
-                                    hashMap.put("ngaydat",ngaydat);
-                                    hashMap.put("diachi",diachi);
-                                    hashMap.put("sdt",sdt);
-                                    hashMap.put("hoten",hoten);
-                                    hashMap.put("phuongthuc",phuongthuc);
-                                    hashMap.put("tongtien",tienthanhtoan);
-                                    hashMap.put("trangthai",1);
-                                    hashMap.put("UID",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    db.collection("HoaDon")
-                                            .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if(task.isSuccessful()){
-                                                String idhoadon = task.getResult().getId();
-                                                for(Product sanPhamModels : listGiohang){
-                                                    HashMap<String,Object> map_chitiet = new HashMap<>();
-                                                    map_chitiet.put("id_hoadon",task.getResult().getId());
-                                                    map_chitiet.put("id_product",sanPhamModels.getIdsp());
-                                                    map_chitiet.put("soluong",sanPhamModels.getSoluong());
-                                                    db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                            if(task.isSuccessful()){
-                                                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                        .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                                        for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                                                            db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                                    .collection("ALL").document(q.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()) {
-//                                                                                        DatHangGuiTinNhan();
-                                                                                        listGiohang.clear();
-                                                                                        giohangAdapter.notifyDataSetChanged();
-                                                                                        TongTienGioHang();
-                                                                                        scrollViewCart.setVisibility(View.INVISIBLE);
-                                                                                        tvNullCart.setVisibility(View.VISIBLE);
-//                                                                                        dialog.cancel();
-
-                                                                                        Log.d("idhoadon", "ID hóa đơn là: " + idhoadon);
-                                                                                    } else {
-                                                                                        Toast.makeText(CartActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        }
-
-                                                                    }
-                                                                });
-
-
-                                                            }
-
-                                                        }
-                                                    });
-                                                }
-
-
-
-                                                Intent intent = new Intent(CartActivity.this, OrderSuccessActivity.class);
-                                                intent.putExtra("idhoadon", idhoadon);
-                                                intent.putExtra("hoten", hoten);
-                                                intent.putExtra("diachi", diachi);
-                                                intent.putExtra("sdt", sdt);
-                                                intent.putExtra("ghichu", ghichu);
-                                                intent.putExtra("ngaydat", ngaydat);
-                                                intent.putExtra("phuongthuc", phuongthuc);
-                                                intent.putExtra("tienthanhtoan", tienthanhtoan);
-                                                intent.putExtra("sanpham", sanpham);
-                                                intent.putExtra("serialzable",listGiohang);
-                                                startActivity(intent);
-                                                finish();
-                                            }else{
-
-                                            }
-
-                                        }
-                                    });
-                                    DatHangGuiTinNhan();
-
-                                    break;
-                                case 1:
-
-//                                    gioHangPresenter.HandleAddHoaDon(ghichu,simpleDateFormat.format(calendar.getTime()),diachi,hoten,sdt,spinnerPhuongthuc.getSelectedItem().toString(),tienthanhtoan,listGiohang);
-                                    dialog.cancel();
-
-                                    DatHangGuiTinNhan();
-                                    break;
-                            }
-
-                        }else{
-                            Toast.makeText(CartActivity.this, "Số điện thoại không để trống", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        Toast.makeText(CartActivity.this, "Địa chỉ không để trống", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
+                if (!CartValidator.isNameValid(hoten)) {
                     Toast.makeText(CartActivity.this, "Họ tên không để trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!CartValidator.isAddressValid(diachi)) {
+                    Toast.makeText(CartActivity.this, "Địa chỉ không để trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!CartValidator.isPhoneValid(sdt)) {
+                    Toast.makeText(CartActivity.this, "Số điện thoại không để trống", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });
 
     }
 
-    public  void TongTienGioHang() {
-        int tongtien = 0;
-        tvPhiVanChuyen.setText(String.valueOf(10000));
-        int phi = Integer.parseInt(tvPhiVanChuyen.getText().toString());
-        for (Product product: listGiohang){
-            tongtien += product.getGiatien() * product.getSoluong();
-        }
-        tvDongia.setText(String.valueOf(tongtien));
-        int dongia = Integer.parseInt(tvDongia.getText().toString());
-        tvTongTien.setText(NumberFormat.getInstance().format(phi + dongia));
+    public void TongTienGioHang() {
+
+        int shippingFee = 10000;
+        tvPhiVanChuyen.setText(String.valueOf(shippingFee));
+
+        int productTotal = CartValidator.calculateTotalPrice(listGiohang);
+        tvDongia.setText(String.valueOf(productTotal));
+
+        int finalPrice = CartValidator.calculateFinalPrice(productTotal, shippingFee);
+        tvTongTien.setText(NumberFormat.getInstance().format(finalPrice));
     }
     private void DeleteDataGioHang(){
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -333,29 +233,35 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
+
+                // ✅ CHECK AN TOÀN (QUAN TRỌNG)
+                if (pos == RecyclerView.NO_POSITION || pos < 0 || pos >= listGiohang.size()) {
+                    giohangAdapter.notifyDataSetChanged(); // reset lại item bị swipe
+                    return;
+                }
+
                 AlertDialog.Builder buidler = new AlertDialog.Builder(CartActivity.this);
                 buidler.setMessage("Bạn có muốn xóa  sản phẩm " + listGiohang.get(pos).getTensp() + " không?");
-                buidler.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        gioHangPresenter.HandleDeleteDataGioHang(listGiohang.get(pos).getId());
-                        listGiohang.remove(pos);
-                        TongTienGioHang();
-                        giohangAdapter.notifyDataSetChanged();
-                        if (listGiohang.size() == 0){
-                            scrollViewCart.setVisibility(View.INVISIBLE);
-                            tvNullCart.setVisibility(View.VISIBLE);
-                        }
-                        Toast.makeText(CartActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
 
+                buidler.setPositiveButton("Xóa", (dialog, which) -> {
+                    gioHangPresenter.HandleDeleteDataGioHang(listGiohang.get(pos).getId());
+                    listGiohang.remove(pos);
+
+                    TongTienGioHang();
+                    giohangAdapter.notifyDataSetChanged();
+
+                    if (listGiohang.size() == 0){
+                        scrollViewCart.setVisibility(View.INVISIBLE);
+                        tvNullCart.setVisibility(View.VISIBLE);
                     }
+
+                    Toast.makeText(CartActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
                 });
-                buidler.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        giohangAdapter.notifyDataSetChanged();
-                    }
+
+                buidler.setNegativeButton("Hủy", (dialog, which) -> {
+                    giohangAdapter.notifyDataSetChanged(); // reset lại item
                 });
+
                 buidler.show();
             }
         };
@@ -418,9 +324,6 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
 
         }
     }
-
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
